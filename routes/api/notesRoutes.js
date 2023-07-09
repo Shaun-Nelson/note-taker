@@ -26,8 +26,9 @@ router.delete("/:id", (req, res) => {
   fs.readFile("./db/db.json", "utf8", (err, data) => {
     if (err) throw err;
     let notes = JSON.parse(data);
-    notes = notes.filter((note) => noteId !== note.id);
-    console.log("NOTES", notes);
+    // filter out the deleted note
+    // note.id is a string, so it has to be parsed
+    notes = notes.filter((note) => noteId !== String(note.id));
     fs.writeFileSync("./db/db.json", JSON.stringify(notes));
     res.json(notes);
   });
